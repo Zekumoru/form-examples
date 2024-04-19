@@ -8,9 +8,9 @@ function App() {
   }, []);
 
   return (
-    <div className="p-4">
+    <main className="p-4 max-w-screen-xl mx-auto">
       <Form />
-    </div>
+    </main>
   );
 }
 
