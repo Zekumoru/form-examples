@@ -43,6 +43,7 @@ const Form = () => {
   const [checkbox3Checked, setCheckbox3Checked] = useState(false);
   const [checkbox4Checked, setCheckbox4Checked] = useState(false);
   const [selectValue, setSelectValue] = useState('');
+  const [selectErrorMessage, setSelectErrorMessage] = useState('');
   const [fileValue, setFileValue] = useState<File | null>(null);
   const [fileErrorMessage, setFileErrorMessage] = useState('');
   const [rangeValue, setRangeValue] = useState(40);
@@ -111,12 +112,21 @@ const Form = () => {
     return true;
   };
 
+  const validateSelectInput = () => {
+    if (selectValue === '') {
+      setSelectErrorMessage('An option is required!');
+      return false;
+    }
+    return true;
+  };
+
   const handleValidations = () => {
     validateTextInput();
     validateEmailInput();
     validatePasswordInput();
     validatePhoneNumberInput();
     validateFileInput();
+    validateSelectInput();
   };
 
   const handleSubmit = () => {
@@ -301,7 +311,12 @@ const Form = () => {
         value={selectValue}
         placeholder="Select an option"
         options={selectOptions}
-        onSelect={setSelectValue}
+        errorMessage={selectErrorMessage}
+        onSelect={(value) => {
+          setSelectErrorMessage('');
+          setSelectValue(value);
+        }}
+        required
       />
 
       <RatingInput
