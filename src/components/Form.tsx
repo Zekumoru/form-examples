@@ -10,6 +10,8 @@ import RangeInput from './RangeInput';
 import TextArea from './TextArea';
 import ToggleInput from './ToggleInput';
 import RatingInput from './RatingInput';
+import DatePicker from './DatePicker';
+import { format } from 'date-fns';
 
 const radioOptions = ['Option 1', 'Option 2', 'Option 3', 'Option 4'];
 const selectOptions = ['Select 1', 'Select 2', 'Select 3', 'Select 4'];
@@ -17,6 +19,9 @@ const selectOptions = ['Select 1', 'Select 2', 'Select 3', 'Select 4'];
 const Form = () => {
   const [textValue, setTextValue] = useState('');
   const [passwordValue, setPasswordValue] = useState('');
+  const [dateValue, setDateValue] = useState(() =>
+    format(new Date(), 'yyyy-MM-dd')
+  );
   const [textAreaValue, setTextAreaValue] = useState('');
   const [toggle1Checked, setToggle1Checked] = useState(true);
   const [toggle2Checked, setToggle2Checked] = useState(true);
@@ -55,6 +60,12 @@ const Form = () => {
         label="Password Field"
         value={passwordValue}
         setValue={setPasswordValue}
+      />
+
+      <DatePicker
+        label="Date Picker"
+        value={dateValue}
+        setValue={setDateValue}
       />
 
       <TextArea
