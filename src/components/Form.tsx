@@ -254,6 +254,7 @@ const Form = () => {
       />
 
       <RangeInput
+        label="Range Input"
         min={0}
         max={100}
         value={rangeValue}
