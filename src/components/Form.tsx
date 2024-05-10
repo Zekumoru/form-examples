@@ -18,7 +18,9 @@ const selectOptions = ['Select 1', 'Select 2', 'Select 3', 'Select 4'];
 
 const Form = () => {
   const [textValue, setTextValue] = useState('');
+  const [textErrorMessage, setTextErrorMessage] = useState('');
   const [passwordValue, setPasswordValue] = useState('');
+  const [passwordErrorMessage, setPasswordErrorMessage] = useState('');
   const [dateValue, setDateValue] = useState(() =>
     format(new Date(), 'yyyy-MM-dd')
   );
@@ -32,13 +34,56 @@ const Form = () => {
   const [checkbox3Checked, setCheckbox3Checked] = useState(false);
   const [checkbox4Checked, setCheckbox4Checked] = useState(false);
   const [selectValue, setSelectValue] = useState('');
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  const [_fileValue, setFileValue] = useState<File | null>(null);
+  const [fileValue, setFileValue] = useState<File | null>(null);
   const [rangeValue, setRangeValue] = useState(40);
   const [ratingValue, setRatingValue] = useState(3.5);
 
+  const validateTextInput = () => {
+    if (textValue.trim() === '') {
+      setTextErrorMessage('Text input is required!');
+      return false;
+    }
+    return true;
+  };
+
+  const validatePasswordInput = () => {
+    if (passwordValue.trim() === '') {
+      setPasswordErrorMessage('Password input is required!');
+      return false;
+    }
+    return true;
+  };
+
+  const handleValidations = () => {
+    validateTextInput();
+    validatePasswordInput();
+  };
+
   const handleSubmit = () => {
-    console.log(textValue);
+    const data = {
+      text: textValue,
+      password: passwordValue,
+      date: dateValue,
+      textArea: textAreaValue,
+      toggle1: toggle1Checked,
+      toggle2: toggle2Checked,
+      toggle3: toggle3Checked,
+      radio: radioValue,
+      checkbox1: checkbox1Checked,
+      checkbox2: checkbox2Checked,
+      checkbox3: checkbox3Checked,
+      checkbox4: checkbox4Checked,
+      select: selectValue,
+      file: fileValue,
+      rating: ratingValue,
+    };
+
+    console.log(
+      JSON.stringify(data, (_key, value) => {
+        if (value instanceof File) return value.name;
+        return value;
+      })
+    );
   };
 
   return (
@@ -54,12 +99,25 @@ const Form = () => {
         <ThemeSwapInput firstTheme="dark" secondTheme="light" />
       </div>
 
-      <TextInput label="Text Field" value={textValue} setValue={setTextValue} />
+      <TextInput
+        label="Text Field"
+        value={textValue}
+        setValue={(value) => {
+          setTextErrorMessage('');
+          setTextValue(value);
+        }}
+        errorMessage={textErrorMessage}
+        required
+      />
 
       <PasswordInput
         label="Password Field"
         value={passwordValue}
-        setValue={setPasswordValue}
+        setValue={(value) => {
+          setPasswordErrorMessage('');
+          setPasswordValue(value);
+        }}
+        errorMessage={passwordErrorMessage}
       />
 
       <DatePicker
@@ -155,7 +213,9 @@ const Form = () => {
         onChange={setRatingValue}
       />
 
-      <button className="btn btn-primary mt-2">Submit</button>
+      <button className="btn btn-primary mt-2" onClick={handleValidations}>
+        Submit
+      </button>
     </form>
   );
 };
