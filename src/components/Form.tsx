@@ -13,6 +13,9 @@ import RatingInput from './RatingInput';
 import DatePicker from './DatePicker';
 import { format } from 'date-fns';
 
+const PHONE_NUMBER_REGEX =
+  /^(\+\d{1,2}\s?)?\(?\d{3}\)?[\s.-]?\d{3}[\s.-]?\d{4}$/;
+
 const radioOptions = ['Option 1', 'Option 2', 'Option 3', 'Option 4'];
 const selectOptions = ['Select 1', 'Select 2', 'Select 3', 'Select 4'];
 
@@ -20,6 +23,8 @@ const selectOptions = ['Select 1', 'Select 2', 'Select 3', 'Select 4'];
 const Form = () => {
   const [textValue, setTextValue] = useState('');
   const [textErrorMessage, setTextErrorMessage] = useState('');
+  const [phoneNumberValue, setPhoneNumberValue] = useState('');
+  const [phoneNumberErrorMessage, setPhoneNumberErrorMessage] = useState('');
   const [passwordValue, setPasswordValue] = useState('');
   const [passwordErrorMessage, setPasswordErrorMessage] = useState('');
   const [dateValue, setDateValue] = useState(() =>
@@ -67,6 +72,20 @@ const Form = () => {
     return true;
   };
 
+  const validatePhoneNumberInput = () => {
+    if (textValue.trim() === '') {
+      setPhoneNumberErrorMessage('Phone number is required!');
+      return false;
+    }
+    if (!PHONE_NUMBER_REGEX.test(phoneNumberValue)) {
+      setPhoneNumberErrorMessage(
+        'Wrong number format! Example format: +39 123 456 7890'
+      );
+      return false;
+    }
+    return true;
+  };
+
   const validateFileInput = () => {
     if (fileValue == null) {
       setFileErrorMessage('File is required!');
@@ -77,6 +96,7 @@ const Form = () => {
 
   const handleValidations = () => {
     validateTextInput();
+    validatePhoneNumberInput();
     validatePasswordInput();
     validateFileInput();
   };
@@ -129,6 +149,18 @@ const Form = () => {
           setTextValue(value);
         }}
         errorMessage={textErrorMessage}
+        required
+      />
+
+      <TextInput
+        label="Phone Number"
+        value={phoneNumberValue}
+        setValue={(value) => {
+          setPhoneNumberErrorMessage('');
+          setPhoneNumberValue(value);
+        }}
+        errorMessage={phoneNumberErrorMessage}
+        regex={PHONE_NUMBER_REGEX}
         required
       />
 
