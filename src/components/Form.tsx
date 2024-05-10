@@ -238,7 +238,10 @@ const Form = () => {
       <TextArea
         placeholder="Input your text here..."
         value={textAreaValue}
-        onChange={setTextAreaValue}
+        onChange={(value) => {
+          setTextAreaErrorMessage('');
+          setTextAreaValue(value);
+        }}
         errorMessage={textAreaErrorMessage}
         required
       />
