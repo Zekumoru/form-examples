@@ -37,6 +37,7 @@ const Form = () => {
   const [fileValue, setFileValue] = useState<File | null>(null);
   const [rangeValue, setRangeValue] = useState(40);
   const [ratingValue, setRatingValue] = useState(3.5);
+  const [jsonData, setJsonData] = useState('{}');
 
   const validateTextInput = () => {
     if (textValue.trim() === '') {
@@ -78,7 +79,7 @@ const Form = () => {
       rating: ratingValue,
     };
 
-    console.log(
+    setJsonData(
       JSON.stringify(data, (_key, value) => {
         if (value instanceof File) return value.name;
         return value;
@@ -216,6 +217,16 @@ const Form = () => {
       <button className="btn btn-primary mt-2" onClick={handleValidations}>
         Submit
       </button>
+
+      <div className="flex flex-col w-full border-opacity-50">
+        <div className="divider">Sent JSON</div>
+      </div>
+
+      <div className="mockup-code no-scrollbar">
+        <pre data-prefix="1">
+          <code>{jsonData}</code>
+        </pre>
+      </div>
     </form>
   );
 };
