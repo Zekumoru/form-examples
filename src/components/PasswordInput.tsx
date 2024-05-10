@@ -4,12 +4,16 @@ const PasswordInput = ({
   setValue,
   errorMessage,
   required,
+  minLength,
+  maxLength,
 }: {
   label: string;
   value: string;
   setValue: (value: string) => void;
   errorMessage?: string;
   required?: boolean;
+  minLength?: number;
+  maxLength?: number;
 }) => {
   return (
     <div className="form-control">
@@ -25,6 +29,8 @@ const PasswordInput = ({
         value={value}
         onChange={(e) => setValue(e.target.value)}
         required={required}
+        minLength={minLength}
+        maxLength={maxLength}
       />
       {errorMessage && (
         <div className="label">

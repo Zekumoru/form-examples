@@ -16,6 +16,7 @@ import { format } from 'date-fns';
 const radioOptions = ['Option 1', 'Option 2', 'Option 3', 'Option 4'];
 const selectOptions = ['Select 1', 'Select 2', 'Select 3', 'Select 4'];
 
+// TODO: to refactor error logic since there's no single source of truth
 const Form = () => {
   const [textValue, setTextValue] = useState('');
   const [textErrorMessage, setTextErrorMessage] = useState('');
@@ -42,7 +43,7 @@ const Form = () => {
 
   const validateTextInput = () => {
     if (textValue.trim() === '') {
-      setTextErrorMessage('Text input is required!');
+      setTextErrorMessage('Text is required!');
       return false;
     }
     return true;
@@ -50,7 +51,17 @@ const Form = () => {
 
   const validatePasswordInput = () => {
     if (passwordValue.trim() === '') {
-      setPasswordErrorMessage('Password input is required!');
+      setPasswordErrorMessage('Password is required!');
+      return false;
+    }
+    if (passwordValue.trimStart().length < 8) {
+      setPasswordErrorMessage('Password must be at least 8 characters long.');
+      return false;
+    }
+    if (passwordValue.trimStart().length > 30) {
+      setPasswordErrorMessage(
+        'Password cannot be more than 30 characters long.'
+      );
       return false;
     }
     return true;
@@ -128,6 +139,8 @@ const Form = () => {
           setPasswordErrorMessage('');
           setPasswordValue(value);
         }}
+        minLength={8}
+        maxLength={30}
         errorMessage={passwordErrorMessage}
         required
       />
