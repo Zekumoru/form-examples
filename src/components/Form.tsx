@@ -35,6 +35,7 @@ const Form = () => {
   const [checkbox4Checked, setCheckbox4Checked] = useState(false);
   const [selectValue, setSelectValue] = useState('');
   const [fileValue, setFileValue] = useState<File | null>(null);
+  const [fileErrorMessage, setFileErrorMessage] = useState('');
   const [rangeValue, setRangeValue] = useState(40);
   const [ratingValue, setRatingValue] = useState(3.5);
   const [jsonData, setJsonData] = useState('{}');
@@ -55,9 +56,18 @@ const Form = () => {
     return true;
   };
 
+  const validateFileInput = () => {
+    if (fileValue == null) {
+      setFileErrorMessage('File is required!');
+      return false;
+    }
+    return true;
+  };
+
   const handleValidations = () => {
     validateTextInput();
     validatePasswordInput();
+    validateFileInput();
   };
 
   const handleSubmit = () => {
@@ -133,7 +143,14 @@ const Form = () => {
         onChange={setTextAreaValue}
       />
 
-      <FileInput label="File Input" onChange={setFileValue} />
+      <FileInput
+        label="File Input"
+        onChange={(file) => {
+          setFileErrorMessage('');
+          setFileValue(file);
+        }}
+        errorMessage={fileErrorMessage}
+      />
 
       <RangeInput
         min={0}
