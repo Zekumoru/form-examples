@@ -13,6 +13,7 @@ import RatingInput from './RatingInput';
 import DatePicker from './DatePicker';
 import { format } from 'date-fns';
 
+const EMAIL_REGEX = /^[\w-.]+@([\w-]+\.)+[\w-]{2,4}$/;
 const PHONE_NUMBER_REGEX =
   /^(\+\d{1,2}\s?)?\(?\d{3}\)?[\s.-]?\d{3}[\s.-]?\d{4}$/;
 
@@ -25,6 +26,8 @@ const Form = () => {
   const [textErrorMessage, setTextErrorMessage] = useState('');
   const [phoneNumberValue, setPhoneNumberValue] = useState('');
   const [phoneNumberErrorMessage, setPhoneNumberErrorMessage] = useState('');
+  const [emailValue, setEmailValue] = useState('');
+  const [emailErrorMessage, setEmailErrorMessage] = useState('');
   const [passwordValue, setPasswordValue] = useState('');
   const [passwordErrorMessage, setPasswordErrorMessage] = useState('');
   const [dateValue, setDateValue] = useState(() =>
@@ -54,6 +57,20 @@ const Form = () => {
     return true;
   };
 
+  const validateEmailInput = () => {
+    if (emailValue.trim() === '') {
+      setEmailErrorMessage('Email is required!');
+      return false;
+    }
+    if (!PHONE_NUMBER_REGEX.test(phoneNumberValue)) {
+      setEmailErrorMessage(
+        'Wrong email format! Example format: test@example.com'
+      );
+      return false;
+    }
+    return true;
+  };
+
   const validatePasswordInput = () => {
     if (passwordValue.trim() === '') {
       setPasswordErrorMessage('Password is required!');
@@ -73,7 +90,7 @@ const Form = () => {
   };
 
   const validatePhoneNumberInput = () => {
-    if (textValue.trim() === '') {
+    if (phoneNumberValue.trim() === '') {
       setPhoneNumberErrorMessage('Phone number is required!');
       return false;
     }
@@ -96,15 +113,18 @@ const Form = () => {
 
   const handleValidations = () => {
     validateTextInput();
-    validatePhoneNumberInput();
+    validateEmailInput();
     validatePasswordInput();
+    validatePhoneNumberInput();
     validateFileInput();
   };
 
   const handleSubmit = () => {
     const data = {
       text: textValue,
+      email: emailValue,
       password: passwordValue,
+      phoneNumber: phoneNumberValue,
       date: dateValue,
       textArea: textAreaValue,
       toggle1: toggle1Checked,
@@ -153,14 +173,14 @@ const Form = () => {
       />
 
       <TextInput
-        label="Phone Number"
-        value={phoneNumberValue}
+        label="Email Field"
+        value={emailValue}
         setValue={(value) => {
-          setPhoneNumberErrorMessage('');
-          setPhoneNumberValue(value);
+          setEmailErrorMessage('');
+          setEmailValue(value);
         }}
-        errorMessage={phoneNumberErrorMessage}
-        regex={PHONE_NUMBER_REGEX}
+        errorMessage={emailErrorMessage}
+        regex={EMAIL_REGEX}
         required
       />
 
@@ -174,6 +194,18 @@ const Form = () => {
         minLength={8}
         maxLength={30}
         errorMessage={passwordErrorMessage}
+        required
+      />
+
+      <TextInput
+        label="Phone Number"
+        value={phoneNumberValue}
+        setValue={(value) => {
+          setPhoneNumberErrorMessage('');
+          setPhoneNumberValue(value);
+        }}
+        errorMessage={phoneNumberErrorMessage}
+        regex={PHONE_NUMBER_REGEX}
         required
       />
 
