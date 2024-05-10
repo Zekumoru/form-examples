@@ -129,6 +129,7 @@ const Form = () => {
           setPasswordValue(value);
         }}
         errorMessage={passwordErrorMessage}
+        required
       />
 
       <DatePicker
@@ -150,6 +151,7 @@ const Form = () => {
           setFileValue(file);
         }}
         errorMessage={fileErrorMessage}
+        required
       />
 
       <RangeInput
