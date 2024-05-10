@@ -34,6 +34,7 @@ const Form = () => {
     format(new Date(), 'yyyy-MM-dd')
   );
   const [textAreaValue, setTextAreaValue] = useState('');
+  const [textAreaErrorMessage, setTextAreaErrorMessage] = useState('');
   const [toggle1Checked, setToggle1Checked] = useState(true);
   const [toggle2Checked, setToggle2Checked] = useState(true);
   const [toggle3Checked, setToggle3Checked] = useState(true);
@@ -104,6 +105,14 @@ const Form = () => {
     return true;
   };
 
+  const validateTextAreaInput = () => {
+    if (textAreaValue === '') {
+      setTextAreaErrorMessage('Text area is required!');
+      return false;
+    }
+    return true;
+  };
+
   const validateFileInput = () => {
     if (fileValue == null) {
       setFileErrorMessage('File is required!');
@@ -125,6 +134,7 @@ const Form = () => {
     validateEmailInput();
     validatePasswordInput();
     validatePhoneNumberInput();
+    validateTextAreaInput();
     validateFileInput();
     validateSelectInput();
   };
@@ -229,6 +239,8 @@ const Form = () => {
         placeholder="Input your text here..."
         value={textAreaValue}
         onChange={setTextAreaValue}
+        errorMessage={textAreaErrorMessage}
+        required
       />
 
       <FileInput
