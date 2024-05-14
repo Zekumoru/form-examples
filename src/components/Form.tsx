@@ -13,7 +13,7 @@ import RatingInput from './RatingInput';
 import DatePicker from './DatePicker';
 import { format } from 'date-fns';
 
-const EMAIL_REGEX = /^[\w-.]+@([\w-]+\.)+[\w-]{2,4}$/;
+const EMAIL_REGEX = /^[\w\-.]+@([\w-]+\.)+[\w-]{2,4}$/;
 const PHONE_NUMBER_REGEX =
   /^(\+\d{1,2}\s?)?\(?\d{3}\)?[\s.-]?\d{3}[\s.-]?\d{4}$/;
 
@@ -64,7 +64,7 @@ const Form = () => {
       setEmailErrorMessage('Email is required!');
       return false;
     }
-    if (!PHONE_NUMBER_REGEX.test(phoneNumberValue)) {
+    if (!EMAIL_REGEX.test(emailValue)) {
       setEmailErrorMessage(
         'Wrong email format! Example format: test@example.com'
       );
